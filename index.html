@@ -1,0 +1,170 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>RSVP · Sebastian & Stacey</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;1,400&family=Pinyon+Script&display=swap" rel="stylesheet">
+<style>
+:root{--olive:#6A8A3A;--ivory:#F8F6EE;--gold:#C9A24E;--ink:#34472B;--line:#DCD6C2;--soft:#EFEBDD}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{min-height:100vh;background:var(--olive);color:var(--ink);font:1.15rem/1.6 "EB Garamond",Georgia,serif;padding:clamp(.75rem,4vw,2.5rem)}
+.card{max-width:36rem;margin:0 auto;background:var(--ivory);padding:clamp(1.75rem,6vw,3.25rem) clamp(1.25rem,6vw,3rem);outline:1px solid var(--gold);outline-offset:-10px;text-align:center}
+.mono{width:4.5rem;height:4.5rem;border-radius:50%;background:var(--gold);color:var(--ink);display:grid;place-items:center;margin:0 auto 1.5rem;font-size:1.5rem}
+h1{font:400 clamp(2.6rem,11vw,3.8rem)/1.1 "Pinyon Script",cursive;margin:0}
+.sub{font-style:italic;margin:.5rem 0 2rem}
+form{text-align:left;display:grid;gap:1.6rem}
+label,legend{display:block;margin-bottom:.4rem;font-weight:500}
+input[type=text],textarea{width:100%;font:inherit;color:inherit;background:#fff;border:1px solid var(--line);border-radius:4px;padding:.7rem .9rem}
+input[type=text]:focus,textarea:focus{outline:none;border-color:var(--olive);box-shadow:0 0 0 3px rgba(106,138,58,.2)}
+:focus-visible{outline:2px solid var(--olive);outline-offset:3px}
+.combo{position:relative}
+.combo ul{position:absolute;z-index:5;left:0;right:0;top:calc(100% + 4px);margin:0;padding:.3rem;list-style:none;background:#fff;border:1px solid var(--line);border-radius:4px;max-height:15rem;overflow-y:auto;box-shadow:0 8px 20px rgba(52,71,43,.15)}
+.combo li{padding:.5rem .7rem;border-radius:3px;cursor:pointer}
+.combo li[aria-selected=true]{background:var(--soft)}
+.combo li.empty{font-style:italic;cursor:default}
+.hint{font-size:.95rem;font-style:italic;margin:.35rem 0 0}
+fieldset{border:0;padding:0;margin:0}
+.choices{display:flex;gap:.7rem;flex-wrap:wrap}
+.choices label{font-weight:400;margin:0;border:1px solid var(--line);background:#fff;border-radius:99px;padding:.5rem 1.2rem;cursor:pointer}
+.choices input{position:absolute;opacity:0}
+.choices label:has(input:checked){background:var(--ink);color:var(--ivory);border-color:var(--ink)}
+.choices label:has(input:focus-visible){outline:2px solid var(--olive);outline-offset:2px}
+.btn{font:500 1.1rem "EB Garamond",Georgia,serif;background:var(--ink);color:var(--ivory);border:0;border-radius:99px;padding:.75rem 2rem;cursor:pointer;display:block;margin:0 auto}
+.btn:hover{background:var(--olive)}
+.btn[disabled]{opacity:.5;cursor:not-allowed}
+.hidden{display:none}
+.error{color:#8E2B1C;text-align:center;margin:0;min-height:1em}
+.done{padding:1rem 0}
+.done h2{font:400 2.6rem "Pinyon Script",cursive;margin:0 0 .5rem}
+.back{display:inline-block;margin-top:2rem;color:var(--ink);font-style:italic}
+</style>
+</head>
+<body>
+<main class="card">
+  <div class="mono">S&amp;S</div>
+  <h1>Sebastian &amp; Stacey</h1>
+  <p class="sub">Saturday, 13 March 2027 at Forest Walk<br>Kindly reply by 1 February 2027</p>
+
+  <form id="rsvp" novalidate>
+    <div>
+      <label for="guest">Your name</label>
+      <div class="combo">
+        <input type="text" id="guest" autocomplete="off" role="combobox" aria-expanded="false" aria-controls="guest-list" aria-autocomplete="list" placeholder="Start typing your name">
+        <ul id="guest-list" role="listbox" class="hidden"></ul>
+      </div>
+      <p class="hint">Can't find your name? Please get in touch with us.</p>
+    </div>
+    <fieldset>
+      <legend>Will you be joining us?</legend>
+      <div class="choices">
+        <label><input type="radio" name="attending" value="Yes"><span>Joyfully accepts</span></label>
+        <label><input type="radio" name="attending" value="No"><span>Regretfully declines</span></label>
+      </div>
+    </fieldset>
+    <div id="diet-wrap">
+      <label for="diet">Any dietary requirements?</label>
+      <input type="text" id="diet" placeholder="Vegetarian, no nuts, etc.">
+    </div>
+    <div>
+      <label for="note">A note for us (optional)</label>
+      <textarea id="note" rows="3"></textarea>
+    </div>
+    <p class="error" id="error" role="alert"></p>
+    <button class="btn" type="submit" id="send">Send RSVP</button>
+  </form>
+
+  <div class="done hidden" id="done" tabindex="-1">
+    <h2>Thank you</h2>
+    <p id="done-msg"></p>
+  </div>
+  <a class="back" href="https://weddingstaceyseb.my.canva.site/">Back to our wedding site</a>
+</main>
+<script>
+/* ===== EDIT THESE TWO THINGS ===== */
+// 1. Your guest list, one name per line in quotes
+const GUESTS = [
+  "Sebastian Leask",
+  "Stacey Han"
+];
+// 2. Your Google Apps Script web app URL (leave empty to test without saving)
+const SCRIPT_URL = "";
+/* ================================= */
+
+const input = document.getElementById('guest');
+const list = document.getElementById('guest-list');
+const form = document.getElementById('rsvp');
+const errorEl = document.getElementById('error');
+let chosen = null, active = -1, matches = [];
+
+const norm = s => s.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');
+
+function render(){
+  const q = norm(input.value.trim());
+  matches = q ? GUESTS.filter(n => norm(n).includes(q)).slice(0,8) : [];
+  list.innerHTML = '';
+  if(!q){ close(); return; }
+  if(!matches.length){
+    list.innerHTML = '<li class="empty">No name on the list matches that</li>';
+  } else {
+    matches.forEach((n,i) => {
+      const li = document.createElement('li');
+      li.id = 'g'+i; li.role = 'option'; li.textContent = n;
+      li.setAttribute('aria-selected', i===active);
+      li.addEventListener('mousedown', e => { e.preventDefault(); pick(n); });
+      list.appendChild(li);
+    });
+  }
+  list.classList.remove('hidden');
+  input.setAttribute('aria-expanded','true');
+  input.setAttribute('aria-activedescendant', active>=0 ? 'g'+active : '');
+}
+function close(){ list.classList.add('hidden'); input.setAttribute('aria-expanded','false'); active=-1; }
+function pick(n){ chosen = n; input.value = n; close(); errorEl.textContent=''; }
+
+input.addEventListener('input', () => { chosen = null; active = -1; render(); });
+input.addEventListener('keydown', e => {
+  if(e.key==='ArrowDown'){ e.preventDefault(); active = Math.min(active+1, matches.length-1); render(); }
+  else if(e.key==='ArrowUp'){ e.preventDefault(); active = Math.max(active-1, 0); render(); }
+  else if(e.key==='Enter' && active>=0){ e.preventDefault(); pick(matches[active]); }
+  else if(e.key==='Escape'){ close(); }
+});
+input.addEventListener('blur', () => {
+  close();
+  // Only accept an exact name from the list
+  const exact = GUESTS.find(n => norm(n) === norm(input.value.trim()));
+  if(exact) pick(exact); else if(!chosen && input.value) chosen = null;
+});
+
+document.querySelectorAll('input[name=attending]').forEach(r =>
+  r.addEventListener('change', () => document.getElementById('diet-wrap').classList.toggle('hidden', r.value==='No' && r.checked)));
+
+form.addEventListener('submit', async e => {
+  e.preventDefault();
+  const attending = form.querySelector('input[name=attending]:checked');
+  if(!chosen || !GUESTS.includes(chosen)){ errorEl.textContent = 'Choose your name from the list.'; input.focus(); return; }
+  if(!attending){ errorEl.textContent = 'Let us know if you can make it.'; return; }
+  errorEl.textContent = '';
+  const btn = document.getElementById('send');
+  btn.disabled = true; btn.textContent = 'Sending…';
+  const data = new URLSearchParams({
+    name: chosen, attending: attending.value,
+    diet: document.getElementById('diet').value, note: document.getElementById('note').value
+  });
+  try{
+    if(SCRIPT_URL) await fetch(SCRIPT_URL, {method:'POST', mode:'no-cors', body:data});
+    form.classList.add('hidden');
+    document.getElementById('done-msg').textContent = attending.value==='Yes'
+      ? `Thanks, ${chosen.split(' ')[0]}. We can't wait to celebrate with you at Forest Walk.`
+      : `Thanks for letting us know, ${chosen.split(' ')[0]}. You'll be missed.`;
+    const done = document.getElementById('done'); done.classList.remove('hidden'); done.focus();
+  }catch(err){
+    errorEl.textContent = 'Your RSVP didn\u2019t send. Check your connection and try again.';
+    btn.disabled = false; btn.textContent = 'Send RSVP';
+  }
+});
+</script>
+</body>
+</html>
