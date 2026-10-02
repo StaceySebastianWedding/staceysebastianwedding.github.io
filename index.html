@@ -5,41 +5,46 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>RSVP · Sebastian & Stacey</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;1,400&family=Pinyon+Script&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500&family=Geist:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
 :root{--olive:#6A8A3A;--ivory:#F8F6EE;--gold:#C9A24E;--ink:#34472B;--line:#DCD6C2;--soft:#EFEBDD;--sage:#90997F}
 *{box-sizing:border-box}
 html,body{margin:0}
-body{min-height:100vh;background:var(--sage);color:var(--ink);font:1.15rem/1.6 "EB Garamond",Georgia,serif;padding:clamp(.75rem,4vw,2.5rem)}
+body{min-height:100vh;background:var(--sage);color:var(--ink);font:300 1.05rem/1.6 "Geist",system-ui,sans-serif;padding:clamp(.75rem,4vw,2.5rem)}
 .card{max-width:36rem;margin:0 auto;background:var(--ivory);padding:clamp(1.75rem,6vw,3.25rem) clamp(1.25rem,6vw,3rem);outline:1px solid var(--gold);outline-offset:-10px;text-align:center}
-.mono{width:4.5rem;height:4.5rem;border-radius:50%;background:var(--gold);color:var(--ink);display:grid;place-items:center;margin:0 auto 1.5rem;font-size:1.5rem}
-h1{font:400 clamp(2.6rem,11vw,3.8rem)/1.1 "Pinyon Script",cursive;margin:0}
-.sub{font-style:italic;margin:.5rem 0 2rem}
+.mono{width:4.5rem;height:4.5rem;border-radius:50%;background:var(--sage);color:var(--ivory);display:grid;place-items:center;margin:0 auto 1.5rem;font:500 1.35rem "Cinzel",serif;letter-spacing:.02em}
+h1{font:400 clamp(1.9rem,8vw,2.7rem)/1.15 "Cinzel",serif;letter-spacing:.02em;margin:0}
+.sub{margin:.75rem 0 2rem}
 form{text-align:left;display:grid;gap:1.6rem}
-label,legend{display:block;margin-bottom:.4rem;font-weight:500}
-input[type=text],textarea{width:100%;font:inherit;color:inherit;background:#fff;border:1px solid var(--line);border-radius:4px;padding:.7rem .9rem}
-input[type=text]:focus,textarea:focus{outline:none;border-color:var(--olive);box-shadow:0 0 0 3px rgba(106,138,58,.2)}
+label,legend{display:block;margin-bottom:.4rem;font-weight:400}
+input[type=text],input[type=email],textarea{width:100%;font:inherit;color:inherit;background:#fff;border:1px solid var(--line);border-radius:4px;padding:.7rem .9rem}
+input[type=text]:focus,input[type=email]:focus,textarea:focus{outline:none;border-color:var(--olive);box-shadow:0 0 0 3px rgba(106,138,58,.2)}
 :focus-visible{outline:2px solid var(--olive);outline-offset:3px}
 .combo{position:relative}
 .combo ul{position:absolute;z-index:5;left:0;right:0;top:calc(100% + 4px);margin:0;padding:.3rem;list-style:none;background:#fff;border:1px solid var(--line);border-radius:4px;max-height:15rem;overflow-y:auto;box-shadow:0 8px 20px rgba(52,71,43,.15)}
 .combo li{padding:.5rem .7rem;border-radius:3px;cursor:pointer}
 .combo li[aria-selected=true]{background:var(--soft)}
-.combo li.empty{font-style:italic;cursor:default}
-.hint{font-size:.95rem;font-style:italic;margin:.35rem 0 0}
+.combo li.empty{opacity:.75;cursor:default}
+.hint{font-size:.9rem;margin:.35rem 0 0}
 fieldset{border:0;padding:0;margin:0}
 .choices{display:flex;gap:.7rem;flex-wrap:wrap}
-.choices label{font-weight:400;margin:0;border:1px solid var(--line);background:#fff;border-radius:99px;padding:.5rem 1.2rem;cursor:pointer}
+.choices label{font-weight:300;margin:0;border:1px solid var(--line);background:#fff;border-radius:99px;padding:.5rem 1.2rem;cursor:pointer}
 .choices input{position:absolute;opacity:0}
 .choices label:has(input:checked){background:var(--ink);color:var(--ivory);border-color:var(--ink)}
 .choices label:has(input:focus-visible){outline:2px solid var(--olive);outline-offset:2px}
-.btn{font:500 1.1rem "EB Garamond",Georgia,serif;background:var(--ink);color:var(--ivory);border:0;border-radius:99px;padding:.75rem 2rem;cursor:pointer;display:block;margin:0 auto}
+.choices label:has(input:disabled){opacity:.45;cursor:not-allowed}
+.menu{display:grid;gap:1.3rem;border-top:1px solid var(--line);padding-top:1.4rem}
+.menu h2{font:400 1.3rem "Cinzel",serif;text-align:center;margin:0}
+.menu .course{margin:0}
+.menu .course span{display:block;font-size:.9rem;opacity:.8}
+.btn{font:400 1rem "Geist",system-ui,sans-serif;background:var(--ink);color:var(--ivory);border:0;border-radius:99px;padding:.75rem 2rem;cursor:pointer;display:block;margin:0 auto}
 .btn:hover{background:var(--olive)}
 .btn[disabled]{opacity:.5;cursor:not-allowed}
 .hidden{display:none}
 .error{color:#8E2B1C;text-align:center;margin:0;min-height:1em}
 .done{padding:1rem 0}
-.done h2{font:400 2.6rem "Pinyon Script",cursive;margin:0 0 .5rem}
-.back{display:inline-block;margin-top:2rem;color:var(--ink);font-style:italic}
+.done h2{font:400 2rem "Cinzel",serif;margin:0 0 .5rem}
+.back{display:inline-block;margin-top:2rem;color:var(--ink)}
 </style>
 </head>
 <body>
@@ -57,6 +62,10 @@ fieldset{border:0;padding:0;margin:0}
       </div>
       <p class="hint">Can't find your name? Please get in touch with us.</p>
     </div>
+    <div>
+      <label for="email">Your email</label>
+      <input type="email" id="email" autocomplete="email" placeholder="We'll email you a copy of your RSVP">
+    </div>
     <fieldset>
       <legend>Will you be joining us?</legend>
       <div class="choices">
@@ -64,6 +73,13 @@ fieldset{border:0;padding:0;margin:0}
         <label><input type="radio" name="attending" value="No"><span>Regretfully declines</span></label>
       </div>
     </fieldset>
+    <div id="menu-wrap" class="menu hidden">
+      <h2>Menu</h2>
+      <p class="course">Starter<span id="starter"></span></p>
+      <fieldset><legend>Main: choose 1</legend><div class="choices" id="mains"></div></fieldset>
+      <fieldset><legend>Sides: choose 2</legend><div class="choices" id="starches"></div></fieldset>
+      <fieldset><legend>Dessert: choose 1</legend><div class="choices" id="desserts"></div></fieldset>
+    </div>
     <div id="diet-wrap">
       <label for="diet">Any dietary requirements?</label>
       <input type="text" id="diet" placeholder="Vegetarian, no nuts, etc.">
@@ -91,7 +107,36 @@ const GUESTS = [
 ];
 // 2. Your Google Apps Script web app URL (leave empty to test without saving)
 const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyyeN8Jo_6_l0rJ8ir-zaw-gK9XilgwwNNNpvyqhrh0wH0AA69Ki0471giJXU9mMhpD8g/exec";
+// 3. The menu. Everyone gets the starter; guests pick 1 main, 2 sides and 1 dessert.
+const MENU = {
+  starter: "Starter to be confirmed",
+  mains: ["Main option 1", "Main option 2"],
+  starches: ["Side option 1", "Side option 2", "Side option 3"],
+  desserts: ["Dessert option 1", "Dessert option 2"]
+};
 /* ================================= */
+
+document.getElementById('starter').textContent = MENU.starter + ' (served to everyone)';
+function options(id, items, type){
+  const box = document.getElementById(id);
+  items.forEach(item => {
+    const label = document.createElement('label');
+    const inp = document.createElement('input');
+    inp.type = type; inp.name = id; inp.value = item;
+    const span = document.createElement('span'); span.textContent = item;
+    label.append(inp, span); box.appendChild(label);
+  });
+}
+options('mains', MENU.mains, 'radio');
+options('starches', MENU.starches, 'checkbox');
+options('desserts', MENU.desserts, 'radio');
+// Allow at most 2 sides: once 2 are ticked, the rest are disabled
+const sides = [...document.querySelectorAll('input[name=starches]')];
+sides.forEach(c => c.addEventListener('change', () => {
+  const full = sides.filter(x => x.checked).length >= 2;
+  sides.forEach(x => { if(!x.checked) x.disabled = full; });
+}));
+const picked = n => [...form.querySelectorAll(`input[name=${n}]:checked`)].map(x => x.value);
 
 const input = document.getElementById('guest');
 const list = document.getElementById('guest-list');
@@ -139,18 +184,31 @@ input.addEventListener('blur', () => {
 });
 
 document.querySelectorAll('input[name=attending]').forEach(r =>
-  r.addEventListener('change', () => document.getElementById('diet-wrap').classList.toggle('hidden', r.value==='No' && r.checked)));
+  r.addEventListener('change', () => {
+    const no = r.value==='No' && r.checked;
+    document.getElementById('diet-wrap').classList.toggle('hidden', no);
+    document.getElementById('menu-wrap').classList.toggle('hidden', !form.querySelector('input[name=attending][value=Yes]').checked);
+  }));
 
 form.addEventListener('submit', async e => {
   e.preventDefault();
   const attending = form.querySelector('input[name=attending]:checked');
   if(!chosen || !GUESTS.includes(chosen)){ errorEl.textContent = 'Choose your name from the list.'; input.focus(); return; }
+  const emailEl = document.getElementById('email');
+  const email = emailEl.value.trim();
+  if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){ errorEl.textContent = 'Enter your email so we can send you a copy.'; emailEl.focus(); return; }
   if(!attending){ errorEl.textContent = 'Let us know if you can make it.'; return; }
+  const coming = attending.value === 'Yes';
+  const main = picked('mains'), starches = picked('starches'), dessert = picked('desserts');
+  if(coming && (main.length !== 1 || starches.length !== 2 || dessert.length !== 1)){
+    errorEl.textContent = 'Please choose a main, 2 sides and a dessert.'; return;
+  }
   errorEl.textContent = '';
   const btn = document.getElementById('send');
   btn.disabled = true; btn.textContent = 'Sending…';
   const data = new URLSearchParams({
-    name: chosen, attending: attending.value,
+    name: chosen, email, attending: attending.value,
+    main: coming ? main[0] : '', starches: coming ? starches.join(', ') : '', dessert: coming ? dessert[0] : '',
     diet: document.getElementById('diet').value, note: document.getElementById('note').value
   });
   try{
@@ -159,6 +217,7 @@ form.addEventListener('submit', async e => {
     document.getElementById('done-msg').textContent = attending.value==='Yes'
       ? `Thanks, ${chosen.split(' ')[0]}. We can't wait to celebrate with you at Forest Walk.`
       : `Thanks for letting us know, ${chosen.split(' ')[0]}. You'll be missed.`;
+    document.getElementById('done-msg').textContent += ` A copy of your RSVP is on its way to ${email}.`;
     const done = document.getElementById('done'); done.classList.remove('hidden'); done.focus();
   }catch(err){
     errorEl.textContent = 'Your RSVP didn\u2019t send. Check your connection and try again.';
