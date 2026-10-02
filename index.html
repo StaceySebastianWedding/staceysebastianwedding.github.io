@@ -63,8 +63,9 @@ fieldset{border:0;padding:0;margin:0}
       <p class="hint">Can't find your name? Please get in touch with us.</p>
     </div>
     <div>
-      <label for="email">Your email</label>
-      <input type="email" id="email" autocomplete="email" placeholder="We'll email you a copy of your RSVP">
+      <label for="email">Your email (optional)</label>
+      <input type="email" id="email" autocomplete="email" aria-describedby="email-hint">
+      <p class="hint" id="email-hint">If you'd like a confirmation and a calendar reminder, please add your email.</p>
     </div>
     <fieldset>
       <legend>Will you be joining us?</legend>
@@ -196,7 +197,7 @@ form.addEventListener('submit', async e => {
   if(!chosen || !GUESTS.includes(chosen)){ errorEl.textContent = 'Choose your name from the list.'; input.focus(); return; }
   const emailEl = document.getElementById('email');
   const email = emailEl.value.trim();
-  if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){ errorEl.textContent = 'Enter your email so we can send you a copy.'; emailEl.focus(); return; }
+  if(email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){ errorEl.textContent = 'That email doesn\u2019t look right. Check it, or leave it blank.'; emailEl.focus(); return; }
   if(!attending){ errorEl.textContent = 'Let us know if you can make it.'; return; }
   const coming = attending.value === 'Yes';
   const main = picked('mains'), starches = picked('starches'), dessert = picked('desserts');
@@ -217,7 +218,7 @@ form.addEventListener('submit', async e => {
     document.getElementById('done-msg').textContent = attending.value==='Yes'
       ? `Thanks, ${chosen.split(' ')[0]}. We can't wait to celebrate with you at Forest Walk.`
       : `Thanks for letting us know, ${chosen.split(' ')[0]}. You'll be missed.`;
-    document.getElementById('done-msg').textContent += ` A copy of your RSVP is on its way to ${email}.`;
+    if(email) document.getElementById('done-msg').textContent += ` A copy of your RSVP is on its way to ${email}.`;
     const done = document.getElementById('done'); done.classList.remove('hidden'); done.focus();
   }catch(err){
     errorEl.textContent = 'Your RSVP didn\u2019t send. Check your connection and try again.';
