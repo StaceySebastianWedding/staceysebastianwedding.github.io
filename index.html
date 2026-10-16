@@ -12,10 +12,11 @@
 html,body{margin:0}
 body{min-height:100vh;background:var(--sage);color:var(--ink);font:300 1.05rem/1.6 "Geist",system-ui,sans-serif;padding:clamp(.75rem,4vw,2.5rem)}
 .card{max-width:36rem;margin:0 auto;background:var(--ivory);padding:clamp(1.75rem,6vw,3.25rem) clamp(1.25rem,6vw,3rem);outline:1px solid var(--gold);outline-offset:-10px;text-align:center}
-.mono{width:4.5rem;height:4.5rem;border-radius:50%;background:var(--sage);color:var(--ivory);display:grid;place-items:center;margin:0 auto 1.5rem;font:500 1.35rem "Cinzel",serif;letter-spacing:.02em}
+.seal{display:block;width:6.5rem;height:auto;margin:0 auto 1.25rem;filter:drop-shadow(0 3px 4px rgba(52,71,43,.25))}
 h1{font:400 clamp(1.9rem,8vw,2.7rem)/1.15 "Cinzel",serif;letter-spacing:.02em;margin:0}
 .sub{margin:.75rem 0 2rem}
-form{text-align:left;display:grid;gap:1.6rem}
+form{text-align:left;display:grid;grid-template-columns:minmax(0,1fr);gap:1.6rem}
+textarea{resize:vertical;max-width:100%;min-height:5rem}
 label,legend{display:block;margin-bottom:.4rem;font-weight:400}
 input[type=text],input[type=email],textarea{width:100%;font:inherit;color:inherit;background:#fff;border:1px solid var(--line);border-radius:4px;padding:.7rem .9rem}
 input[type=text]:focus,input[type=email]:focus,textarea:focus{outline:none;border-color:var(--olive);box-shadow:0 0 0 3px rgba(106,138,58,.2)}
@@ -26,17 +27,13 @@ input[type=text]:focus,input[type=email]:focus,textarea:focus{outline:none;borde
 .combo li[aria-selected=true]{background:var(--soft)}
 .combo li.empty{opacity:.75;cursor:default}
 .hint{font-size:.9rem;margin:.35rem 0 0}
+.bar-note{font-size:1.05rem;font-weight:400;margin:.6rem 0 0}
 fieldset{border:0;padding:0;margin:0}
 .choices{display:flex;gap:.7rem;flex-wrap:wrap}
 .choices label{font-weight:300;margin:0;border:1px solid var(--line);background:#fff;border-radius:99px;padding:.5rem 1.2rem;cursor:pointer}
 .choices input{position:absolute;opacity:0}
 .choices label:has(input:checked){background:var(--ink);color:var(--ivory);border-color:var(--ink)}
 .choices label:has(input:focus-visible){outline:2px solid var(--olive);outline-offset:2px}
-.choices label:has(input:disabled){opacity:.45;cursor:not-allowed}
-.menu{display:grid;gap:1.3rem;border-top:1px solid var(--line);padding-top:1.4rem}
-.menu h2{font:400 1.3rem "Cinzel",serif;text-align:center;margin:0}
-.menu .course{margin:0}
-.menu .course span{display:block;font-size:.9rem;opacity:.8}
 .btn{font:400 1rem "Geist",system-ui,sans-serif;background:var(--ink);color:var(--ivory);border:0;border-radius:99px;padding:.75rem 2rem;cursor:pointer;display:block;margin:0 auto}
 .btn:hover{background:var(--olive)}
 .btn[disabled]{opacity:.5;cursor:not-allowed}
@@ -49,7 +46,7 @@ fieldset{border:0;padding:0;margin:0}
 </head>
 <body>
 <main class="card">
-  <div class="mono">S&amp;S</div>
+  <img class="seal" src="seal.webp" width="353" height="360" alt="">
   <h1>Sebastian &amp; Stacey</h1>
   <p class="sub">Saturday, 13 March 2027 at Forest Walk<br>Kindly reply by 15 January 2027</p>
 
@@ -73,14 +70,8 @@ fieldset{border:0;padding:0;margin:0}
         <label><input type="radio" name="attending" value="Yes"><span>Joyfully accepts</span></label>
         <label><input type="radio" name="attending" value="No"><span>Regretfully declines</span></label>
       </div>
+      <p class="bar-note hidden" id="bar-note" role="status">Please be aware it will be a cash bar.</p>
     </fieldset>
-    <div id="menu-wrap" class="menu hidden">
-      <h2>Menu</h2>
-      <p class="course">Starter<span id="starter"></span></p>
-      <fieldset><legend>Main: choose 1</legend><div class="choices" id="mains"></div></fieldset>
-      <fieldset><legend>Sides: choose 2</legend><div class="choices" id="starches"></div></fieldset>
-      <fieldset><legend>Dessert: choose 1</legend><div class="choices" id="desserts"></div></fieldset>
-    </div>
     <div id="diet-wrap">
       <label for="diet">Any dietary requirements?</label>
       <input type="text" id="diet" placeholder="Vegetarian, no nuts, etc.">
@@ -104,40 +95,70 @@ fieldset{border:0;padding:0;margin:0}
 // 1. Your guest list, one name per line in quotes
 const GUESTS = [
   "Sebastian Leask",
-  "Stacey Han"
+  "Stacey Hanssen",
+  "Maudie Hanssen",
+  "John Hanssen Snr",
+  "Marisa Leask",
+  "Kevin Leask",
+  "Michael Leask",
+  "Sharon Vreeburg",
+  "John Hanssen Jnr",
+  "John Hanssen Jnr +1",
+  "Alex de Lange",
+  "Caydon Heuer",
+  "Richard Day",
+  "Sam Quequin-Fouche",
+  "Donovan Dean",
+  "Corlia Dean",
+  "Alex Simonovic",
+  "Duncan Dean",
+  "Storm Bekker",
+  "Storm Bekker +1",
+  "Carinda Dean",
+  "Marco Rougier",
+  "Tevin Varden",
+  "Adriana Balducci",
+  "Fabio Balducci",
+  "Roberto Gabellone",
+  "Samantha Gabellone",
+  "Tony Gabellone",
+  "Carmelina Gabellone",
+  "Declan Leask",
+  "Nadia Kilian",
+  "Angela Bruderlin",
+  "Adrian Bruderlin",
+  "Meaghan Bruderlin",
+  "Danielle Mostyn",
+  "Clifford Willers",
+  "Rene Willers",
+  "Christine Willers",
+  "Candace Kolovos",
+  "Dimitra Kolovos",
+  "Annatjie Jordaan",
+  "Francois Jordaan",
+  "Jodine du Plessis",
+  "Alfie du Plessis",
+  "Annanda Cabula",
+  "Fabio Cabula",
+  "Tracey Andrew",
+  "Julian Andrew",
+  "Jaycee Bekker",
+  "Antonie Bekker",
+  "Gina Balducci",
+  "Luca Balducci",
+  "Jacquiline Andrew",
+  "Jacquiline Andrew +1",
+  "Jade Cabula",
+  "Jarryd Tyson",
+  "Devin McKee",
+  "Eloise McKee",
+  "Philip Roach",
+  "Shirley Roach",
+  "Jacques van Heerden"
 ];
 // 2. Your Google Apps Script web app URL (leave empty to test without saving)
 const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyyeN8Jo_6_l0rJ8ir-zaw-gK9XilgwwNNNpvyqhrh0wH0AA69Ki0471giJXU9mMhpD8g/exec";
-// 3. The menu. Everyone gets the starter; guests pick 1 main, 2 sides and 1 dessert.
-const MENU = {
-  starter: "Starter to be confirmed",
-  mains: ["Main option 1", "Main option 2"],
-  starches: ["Side option 1", "Side option 2", "Side option 3"],
-  desserts: ["Dessert option 1", "Dessert option 2"]
-};
 /* ================================= */
-
-document.getElementById('starter').textContent = MENU.starter + ' (served to everyone)';
-function options(id, items, type){
-  const box = document.getElementById(id);
-  items.forEach(item => {
-    const label = document.createElement('label');
-    const inp = document.createElement('input');
-    inp.type = type; inp.name = id; inp.value = item;
-    const span = document.createElement('span'); span.textContent = item;
-    label.append(inp, span); box.appendChild(label);
-  });
-}
-options('mains', MENU.mains, 'radio');
-options('starches', MENU.starches, 'checkbox');
-options('desserts', MENU.desserts, 'radio');
-// Allow at most 2 sides: once 2 are ticked, the rest are disabled
-const sides = [...document.querySelectorAll('input[name=starches]')];
-sides.forEach(c => c.addEventListener('change', () => {
-  const full = sides.filter(x => x.checked).length >= 2;
-  sides.forEach(x => { if(!x.checked) x.disabled = full; });
-}));
-const picked = n => [...form.querySelectorAll(`input[name=${n}]:checked`)].map(x => x.value);
 
 const input = document.getElementById('guest');
 const list = document.getElementById('guest-list');
@@ -186,9 +207,9 @@ input.addEventListener('blur', () => {
 
 document.querySelectorAll('input[name=attending]').forEach(r =>
   r.addEventListener('change', () => {
-    const no = r.value==='No' && r.checked;
-    document.getElementById('diet-wrap').classList.toggle('hidden', no);
-    document.getElementById('menu-wrap').classList.toggle('hidden', !form.querySelector('input[name=attending][value=Yes]').checked);
+    const yes = form.querySelector('input[name=attending][value=Yes]').checked;
+    document.getElementById('diet-wrap').classList.toggle('hidden', r.value==='No' && r.checked);
+    document.getElementById('bar-note').classList.toggle('hidden', !yes);
   }));
 
 form.addEventListener('submit', async e => {
@@ -199,17 +220,11 @@ form.addEventListener('submit', async e => {
   const email = emailEl.value.trim();
   if(email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){ errorEl.textContent = 'That email doesn\u2019t look right. Check it, or leave it blank.'; emailEl.focus(); return; }
   if(!attending){ errorEl.textContent = 'Let us know if you can make it.'; return; }
-  const coming = attending.value === 'Yes';
-  const main = picked('mains'), starches = picked('starches'), dessert = picked('desserts');
-  if(coming && (main.length !== 1 || starches.length !== 2 || dessert.length !== 1)){
-    errorEl.textContent = 'Please choose a main, 2 sides and a dessert.'; return;
-  }
   errorEl.textContent = '';
   const btn = document.getElementById('send');
   btn.disabled = true; btn.textContent = 'Sending…';
   const data = new URLSearchParams({
     name: chosen, email, attending: attending.value,
-    main: coming ? main[0] : '', starches: coming ? starches.join(', ') : '', dessert: coming ? dessert[0] : '',
     diet: document.getElementById('diet').value, note: document.getElementById('note').value
   });
   try{
